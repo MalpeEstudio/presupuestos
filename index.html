@@ -134,10 +134,8 @@ const CONDS = [
 let items = [];
 let savedBudgets = [];
 
-(async()=>{
-  try{ const r=await window.storage.get('malpe-budgets'); if(r) savedBudgets=JSON.parse(r.value); }catch(e){}
-  renderSaved();
-})();
+try{ const r=localStorage.getItem('malpe-budgets'); if(r) savedBudgets=JSON.parse(r); }catch(e){}
+renderSaved();
 
 function switchTab(t){
   document.getElementById('tabEditor').style.display=t==='editor'?'block':'none';
@@ -333,7 +331,7 @@ async function saveCurrentBudget(){
   const title=val('budgetTitle')||'Sin título';
   const budget={id:Date.now(),title,client:val('clientName'),expediente:val('expediente'),items:JSON.parse(JSON.stringify(items)),showTotal:showTotal(),savedAt:new Date().toLocaleDateString('es-ES')};
   savedBudgets.unshift(budget);
-  try{ await window.storage.set('malpe-budgets',JSON.stringify(savedBudgets)); alert(`✓ "${title}" guardado`); }
+  try{ localStorage.setItem('malpe-budgets',JSON.stringify(savedBudgets)); alert(`✓ "${title}" guardado`); }
   catch(e){ alert('Error al guardar'); }
   renderSaved();
 }
@@ -352,7 +350,7 @@ function loadBudget(id){
 async function deleteBudget(id){
   if(!confirm('¿Eliminar este presupuesto?')) return;
   savedBudgets=savedBudgets.filter(b=>b.id!==id);
-  await window.storage.set('malpe-budgets',JSON.stringify(savedBudgets));
+  localStorage.setItem('malpe-budgets',JSON.stringify(savedBudgets));
   renderSaved();
 }
 
@@ -378,10 +376,35 @@ async function downloadPDF(){
   btn.textContent='⏳ Generando...'; btn.disabled=true;
   try{
     const pdf=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
+    const W=297, H=210;
     for(let i=0;i<slides.length;i++){
-      const canvas=await html2canvas(slides[i],{scale:2,useCORS:true,allowTaint:true,backgroundColor:'#1c1e22',logging:false,onclone:(doc)=>{doc.querySelectorAll('link[rel="stylesheet"]').forEach(el=>el.remove());}});
+      const slide=slides[i];
+      // Guardar estilos originales
+      const origWidth=slide.style.width;
+      const origHeight=slide.style.height;
+      // Forzar tamaño fijo para captura
+      slide.style.width='1280px';
+      slide.style.height='720px';
+      const canvas=await html2canvas(slide,{
+        scale:1.5,
+        useCORS:true,
+        allowTaint:true,
+        backgroundColor:'#1c1e22',
+        logging:false,
+        width:1280,
+        height:720,
+        windowWidth:1280,
+        onclone:(doc)=>{
+          const s=doc.querySelectorAll('.slide')[i];
+          if(s){ s.style.width='1280px'; s.style.height='720px'; }
+          doc.querySelectorAll('link[rel="stylesheet"]').forEach(el=>el.remove());
+        }
+      });
+      // Restaurar estilos
+      slide.style.width=origWidth;
+      slide.style.height=origHeight;
       if(i>0) pdf.addPage();
-      pdf.addImage(canvas.toDataURL('image/jpeg',.92),'JPEG',0,0,297,210);
+      pdf.addImage(canvas.toDataURL('image/jpeg',.92),'JPEG',0,0,W,H);
     }
     pdf.save(`${(val('budgetTitle')||'presupuesto').replace(/\s+/g,'-').toLowerCase()}-malpe.pdf`);
   }catch(e){alert('Error: '+e.message);}
