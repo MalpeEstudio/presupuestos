@@ -370,23 +370,33 @@ function renderSaved(){
 
 async function downloadPDF(){
   const {jsPDF}=window.jspdf;
-  const slides=document.querySelectorAll('#previewArea .slide');
-  if(!slides.length){alert('No hay slides para exportar');return;}
   const btn=document.querySelector('.btn-pdf');
   btn.textContent='⏳ Generando...'; btn.disabled=true;
   try{
     const pdf=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
     const W=297, H=210;
+
+    // Crear contenedor oculto fuera de pantalla
+    const container=document.createElement('div');
+    container.style.cssText='position:fixed;left:-9999px;top:0;width:1280px;z-index:-1;';
+    container.innerHTML=buildSlides().join('');
+    document.body.appendChild(container);
+
+    // Forzar tamaño exacto en cada slide del contenedor
+    const slides=container.querySelectorAll('.slide');
+    slides.forEach(s=>{
+      s.style.width='1280px';
+      s.style.height='720px';
+      s.style.minHeight='720px';
+      s.style.borderRadius='0';
+    });
+
+    // Esperar a que las imágenes de fondo carguen
+    await new Promise(r=>setTimeout(r,1500));
+
     for(let i=0;i<slides.length;i++){
-      const slide=slides[i];
-      // Guardar estilos originales
-      const origWidth=slide.style.width;
-      const origHeight=slide.style.height;
-      // Forzar tamaño fijo para captura
-      slide.style.width='1280px';
-      slide.style.height='720px';
-      const canvas=await html2canvas(slide,{
-        scale:1.5,
+      const canvas=await html2canvas(slides[i],{
+        scale:1,
         useCORS:true,
         allowTaint:true,
         backgroundColor:'#1c1e22',
@@ -394,20 +404,17 @@ async function downloadPDF(){
         width:1280,
         height:720,
         windowWidth:1280,
-        onclone:(doc)=>{
-          const s=doc.querySelectorAll('.slide')[i];
-          if(s){ s.style.width='1280px'; s.style.height='720px'; }
-          doc.querySelectorAll('link[rel="stylesheet"]').forEach(el=>el.remove());
-        }
+        windowHeight:720,
       });
-      // Restaurar estilos
-      slide.style.width=origWidth;
-      slide.style.height=origHeight;
       if(i>0) pdf.addPage();
       pdf.addImage(canvas.toDataURL('image/jpeg',.92),'JPEG',0,0,W,H);
     }
+
+    document.body.removeChild(container);
     pdf.save(`${(val('budgetTitle')||'presupuesto').replace(/\s+/g,'-').toLowerCase()}-malpe.pdf`);
-  }catch(e){alert('Error: '+e.message);}
+  }catch(e){
+    alert('Error: '+e.message);
+  }
   btn.textContent='⬇ Descargar PDF'; btn.disabled=false;
 }
 
