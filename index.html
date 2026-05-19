@@ -41,7 +41,7 @@ textarea{resize:vertical;min-height:55px}
 .add-box-title{font-size:10px;font-weight:700;color:#6b7280;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
 .check-row{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#1a1a1a;border:1px solid #2d3748;border-radius:5px;margin-top:8px}
 .preview{flex:1;overflow-y:auto;background:#1a1a1a;padding:24px;display:flex;flex-direction:column;align-items:center;gap:16px}
-.slide{width:900px;aspect-ratio:16/9;position:relative;overflow:hidden;border-radius:4px;box-shadow:0 8px 40px rgba(0,0,0,.6);flex-shrink:0}
+.slide{width:1366px;height:768px;position:relative;overflow:hidden;border-radius:4px;box-shadow:0 8px 40px rgba(0,0,0,.6);flex-shrink:0}
 .slide-bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0}
 .slide-content{position:relative;z-index:1;width:100%;height:100%;display:flex;flex-direction:column}
 .slide-label{font-size:10px;color:#4b5563;text-align:center;letter-spacing:1px;margin-top:4px}
@@ -376,24 +376,21 @@ async function downloadPDF(){
     const slides=document.querySelectorAll('#previewArea .slide');
     if(!slides.length){alert('No hay slides para exportar');return;}
 
-    // Capturar primera slide para obtener proporciones reales
-    const first=slides[0];
-    const sw=first.offsetWidth;
-    const sh=first.offsetHeight;
-
-    // Crear PDF con las proporciones exactas de la slide
-    const pdf=new jsPDF({orientation:'landscape',unit:'px',format:[sw,sh]});
+    const SW=1366, SH=768;
+    const pdf=new jsPDF({orientation:'landscape',unit:'px',format:[SW,SH]});
 
     for(let i=0;i<slides.length;i++){
       const canvas=await html2canvas(slides[i],{
-        scale:2,
+        scale:1,
         useCORS:true,
         allowTaint:true,
         backgroundColor:'#1c1e22',
         logging:false,
+        width:SW,
+        height:SH,
       });
-      if(i>0) pdf.addPage([sw,sh],'landscape');
-      pdf.addImage(canvas.toDataURL('image/jpeg',.95),'JPEG',0,0,sw,sh);
+      if(i>0) pdf.addPage([SW,SH],'landscape');
+      pdf.addImage(canvas.toDataURL('image/jpeg',.95),'JPEG',0,0,SW,SH);
     }
     pdf.save(`${(val('budgetTitle')||'presupuesto').replace(/\s+/g,'-').toLowerCase()}-malpe.pdf`);
   }catch(e){alert('Error: '+e.message);}
