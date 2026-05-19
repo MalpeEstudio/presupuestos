@@ -340,14 +340,15 @@ function buildSlides(){
               `).join('')}
             `).join('')}
           </div>
+          ${document.getElementById('showTotal').checked?`
           <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.2)">
             <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.4);margin-bottom:5px"><span>Base imponible</span><span>${fmtPrice(base)} €</span></div>
             <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.4);margin-bottom:10px"><span>IVA 21%</span><span>+${fmtPrice(iva)} €</span></div>
-            ${document.getElementById('showTotal').checked?`
             <div style="display:flex;justify-content:space-between;align-items:center">
               <span style="font-size:12px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:2px">TOTAL</span>
               <span style="font-size:30px;font-weight:700;color:#10b981">${fmtPrice(total)} €</span>
-            </div>`:''}
+            </div>
+          </div>`:''}
           </div>
         </div>
       </div>
