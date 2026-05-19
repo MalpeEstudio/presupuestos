@@ -8,125 +8,70 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,700;1,700&display=swap');
-</style>
-<style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Montserrat',sans-serif;background:#111;color:#fff;height:100vh;overflow:hidden;display:flex}
 
-/* SIDEBAR */
-.sidebar{width:300px;flex-shrink:0;background:#0d0d0d;border-right:1px solid #1f2937;display:flex;flex-direction:column;height:100vh;overflow:hidden}
-.sidebar-header{padding:16px;border-bottom:1px solid #1f2937;flex-shrink:0}
+.sidebar{width:310px;flex-shrink:0;background:#0d0d0d;border-right:1px solid #1f2937;display:flex;flex-direction:column;height:100vh;overflow:hidden}
+.sidebar-header{padding:14px 16px;border-bottom:1px solid #1f2937;flex-shrink:0}
 .sidebar-logo{font-size:12px;font-weight:700;color:#10b981;letter-spacing:2px}
 .sidebar-sub{font-size:9px;color:#4b5563;letter-spacing:2px;margin-top:2px}
 .sidebar-tabs{display:flex;border-bottom:1px solid #1f2937;flex-shrink:0}
-.tab{flex:1;padding:10px;font-size:10px;font-weight:700;letter-spacing:1px;text-align:center;cursor:pointer;color:#4b5563;border:none;background:none;font-family:'Montserrat',sans-serif;transition:all .2s}
+.tab{flex:1;padding:9px;font-size:10px;font-weight:700;letter-spacing:1px;text-align:center;cursor:pointer;color:#4b5563;border:none;background:none;font-family:'Montserrat',sans-serif;transition:all .2s}
 .tab.active{color:#10b981;border-bottom:2px solid #10b981}
 .sidebar-body{flex:1;overflow-y:auto;padding:14px}
-.sidebar-footer{padding:12px;border-top:1px solid #1f2937;flex-shrink:0;display:flex;flex-direction:column;gap:8px}
+.sidebar-footer{padding:10px 12px;border-top:1px solid #1f2937;flex-shrink:0;display:flex;flex-direction:column;gap:7px}
 
-/* FORM ELEMENTS */
-.field{margin-bottom:12px}
-label{font-size:10px;color:#6b7280;display:block;margin-bottom:4px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
-input,textarea,select{width:100%;background:#1a1a1a;border:1px solid #2d3748;border-radius:5px;color:#fff;padding:8px 10px;font-family:'Montserrat',sans-serif;font-size:12px;outline:none;transition:border .2s}
+label{font-size:10px;color:#6b7280;display:block;margin-bottom:3px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+input,textarea,select{width:100%;background:#1a1a1a;border:1px solid #2d3748;border-radius:5px;color:#fff;padding:7px 9px;font-family:'Montserrat',sans-serif;font-size:12px;outline:none;transition:border .2s}
 input:focus,textarea:focus{border-color:#10b981}
-textarea{resize:vertical;min-height:60px}
-.section-title{font-size:9px;font-weight:700;letter-spacing:2px;color:#4b5563;text-transform:uppercase;margin:16px 0 10px;padding-bottom:4px;border-bottom:1px solid #1f2937}
+textarea{resize:vertical;min-height:55px}
+.field{margin-bottom:10px}
+.section-title{font-size:9px;font-weight:700;letter-spacing:2px;color:#4b5563;text-transform:uppercase;margin:14px 0 8px;padding-bottom:4px;border-bottom:1px solid #1f2937}
 
-/* BUTTONS */
-.btn{display:block;width:100%;padding:9px;border-radius:5px;border:none;font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;cursor:pointer;text-align:center;transition:all .2s;letter-spacing:.5px}
+.btn{display:block;width:100%;padding:8px;border-radius:5px;border:none;font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;cursor:pointer;text-align:center;transition:all .2s;letter-spacing:.5px}
 .btn-green{background:#10b981;color:#fff}
 .btn-green:hover{background:#059669}
+.btn-outline{background:transparent;color:#10b981;border:1px solid #10b981}
+.btn-outline:hover{background:#10b981;color:#fff}
 .btn-dark{background:#1f2937;color:#9ca3af}
 .btn-dark:hover{background:#374151;color:#fff}
 .btn-pdf{background:linear-gradient(135deg,#10b981,#3b82f6);color:#fff}
 .btn-pdf:hover{opacity:.9}
-.btn-sm{font-size:10px;padding:5px 10px;border-radius:4px;border:1px solid #374151;background:#1a1a1a;color:#6b7280;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:600}
-.btn-sm:hover{background:#374151;color:#fff}
-.btn-danger{border-color:#7f1d1d;color:#f87171}
-.btn-danger:hover{background:#7f1d1d;color:#fff}
+.btn-xs{font-size:10px;padding:4px 8px;border-radius:4px;border:1px solid #374151;background:#1a1a1a;color:#6b7280;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:600;white-space:nowrap}
+.btn-xs:hover{background:#374151;color:#fff}
+.btn-xs.danger{border-color:#7f1d1d;color:#f87171}
+.btn-xs.danger:hover{background:#7f1d1d}
 
-/* SERVICE CARDS IN SIDEBAR */
-.svc-card{background:#1a1a1a;border:1px solid #2d3748;border-radius:6px;padding:10px;margin-bottom:8px}
-.svc-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
-.svc-card-title{font-size:12px;font-weight:700;color:#10b981}
-.svc-card-price{font-size:11px;color:#fff;font-weight:700}
-.svc-card-desc{font-size:10px;color:#6b7280;line-height:1.5}
+/* Items lista sidebar */
+.item-card{background:#1a1a1a;border:1px solid #2d3748;border-radius:5px;padding:8px 10px;margin-bottom:6px}
+.item-card.is-partida{border-left:3px solid #10b981;background:#0d1f18}
+.item-card-row{display:flex;justify-content:space-between;align-items:flex-start;gap:6px}
+.item-card-title{font-size:11px;font-weight:700;color:#fff;flex:1}
+.item-card-sub{font-size:10px;color:#6b7280;margin-top:2px;line-height:1.4}
+.item-card-price{font-size:11px;font-weight:700;color:#10b981;white-space:nowrap}
+.partida-label{font-size:9px;font-weight:700;color:#10b981;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px}
 
-/* SAVED BUDGETS */
-.budget-card{background:#1a1a1a;border:1px solid #2d3748;border-radius:6px;padding:10px;margin-bottom:8px;cursor:pointer;transition:border .2s}
-.budget-card:hover{border-color:#10b981}
-.budget-card-title{font-size:12px;font-weight:700;color:#fff;margin-bottom:2px}
-.budget-card-meta{font-size:10px;color:#6b7280}
-.budget-card-actions{display:flex;gap:6px;margin-top:8px}
+/* Separador añadir */
+.add-box{background:#111;border:1px dashed #2d3748;border-radius:6px;padding:12px;margin-bottom:10px}
+.add-box-title{font-size:10px;font-weight:700;color:#6b7280;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
 
-/* PREVIEW AREA */
+/* PREVIEW */
 .preview{flex:1;overflow-y:auto;background:#1a1a1a;padding:24px;display:flex;flex-direction:column;align-items:center;gap:16px}
-
-/* SLIDES */
 .slide{width:900px;aspect-ratio:16/9;position:relative;overflow:hidden;border-radius:4px;box-shadow:0 8px 40px rgba(0,0,0,.6);flex-shrink:0}
 .slide-bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0}
 .slide-content{position:relative;z-index:1;width:100%;height:100%;display:flex;flex-direction:column}
 .slide-label{font-size:10px;color:#4b5563;text-align:center;letter-spacing:1px;margin-top:4px}
+.s03-content{padding:36px 48px;height:100%;display:flex;flex-direction:column}
 
-/* SLIDE 01 - PORTADA */
-.s01-bg{background:radial-gradient(ellipse at 85% 10%, #1a7a5e 0%, transparent 45%), radial-gradient(ellipse at 15% 80%, #3730a3 0%, transparent 40%), #1c1c1c}
-.s01-content{padding:50px 60px;display:flex;flex-direction:column;justify-content:flex-end;height:100%}
-.s01-logo{position:absolute;top:30px;right:40px;text-align:right}
-.s01-logo-mark{font-size:11px;font-weight:700;color:#fff;letter-spacing:2px}
-.s01-tagline{font-size:8px;color:rgba(255,255,255,.5);letter-spacing:2px}
-.s01-pretitle{font-size:11px;font-weight:500;color:rgba(255,255,255,.5);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px}
-.s01-title{font-size:38px;font-weight:700;font-style:italic;color:#fff;line-height:1.1;margin-bottom:10px}
-.s01-client{font-size:22px;font-weight:300;color:rgba(255,255,255,.7);margin-bottom:6px}
-.s01-exp{font-size:13px;color:rgba(255,255,255,.4);font-weight:400}
-
-/* SLIDE 02 - TRANSICIÓN */
-.s02-bg{background:radial-gradient(ellipse at 60% 50%, #3730a3 0%, transparent 50%), radial-gradient(ellipse at 85% 20%, #1a7a5e 0%, transparent 40%), #1a1a1a}
-.s02-content{display:flex;align-items:center;justify-content:center;height:100%;flex-direction:column;gap:8px}
-.s02-word{font-size:72px;font-weight:700;font-style:italic;color:#fff;letter-spacing:-2px;line-height:1}
-.s02-sub{font-size:12px;color:rgba(255,255,255,.4);letter-spacing:3px;text-transform:uppercase}
-
-/* SLIDE 03 - CONTENIDO */
-.s03-bg{background:radial-gradient(ellipse at 90% 5%, #1a7a5e 0%, transparent 35%), radial-gradient(ellipse at 5% 90%, #3730a3 0%, transparent 35%), #1c1e22}
-.s03-content{padding:40px 50px;height:100%;display:flex;flex-direction:column}
-.s03-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px}
-.s03-title{font-size:28px;font-weight:700;font-style:italic;color:#fff}
-.s03-brand{font-size:9px;color:rgba(255,255,255,.3);font-weight:700;letter-spacing:2px;text-align:right}
-.s03-divider{width:40px;height:2px;background:#10b981;margin-bottom:20px}
-.s03-desc{font-size:12px;color:rgba(255,255,255,.7);line-height:1.7;margin-bottom:20px}
-.s03-price-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);border-radius:4px;padding:8px 16px;margin-top:auto}
-.s03-price-label{font-size:10px;color:rgba(255,255,255,.5);letter-spacing:1px}
-.s03-price-val{font-size:22px;font-weight:700;color:#fff}
-.s03-price-iva{font-size:9px;color:rgba(255,255,255,.4)}
-
-/* SLIDE PRESUPUESTO */
-.price-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:12px;color:rgba(255,255,255,.8)}
-.price-row .name{flex:1}
-.price-row .desc{flex:2;font-size:10px;color:rgba(255,255,255,.4);padding:0 12px}
-.price-row .amount{font-weight:700;color:#fff;white-space:nowrap}
-.price-total{display:flex;justify-content:space-between;align-items:center;padding:14px 0 0;margin-top:4px}
-.price-total .label{font-size:11px;color:rgba(255,255,255,.5);letter-spacing:1px}
-.price-total .val{font-size:24px;font-weight:700;color:#10b981}
-
-/* SLIDE CONDICIONES */
-.cond-item{display:flex;gap:12px;margin-bottom:10px;font-size:10px;color:rgba(255,255,255,.7);line-height:1.6}
-.cond-num{font-weight:700;color:#10b981;min-width:16px;font-size:11px}
-.cond-footer{margin-top:auto;padding-top:12px;border-top:1px solid rgba(255,255,255,.1);font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.5px}
-
-/* SLIDE 04 - FINAL */
-.s04-bg{background:radial-gradient(ellipse at 50% 30%, #1a7a5e 0%, transparent 60%), radial-gradient(ellipse at 50% 100%, #1a7a5e 0%, transparent 40%), #1c1e22}
-
-/* LOADER */
-.loader{font-size:10px;color:#6b7280;text-align:center;padding:6px;min-height:20px}
-.loader.active{color:#10b981}
-
-/* HIDDEN for PDF */
-#pdfTarget{position:fixed;left:-9999px;top:0;width:1280px}
+/* Saved */
+.budget-card{background:#1a1a1a;border:1px solid #2d3748;border-radius:6px;padding:10px;margin-bottom:8px}
+.budget-card-title{font-size:12px;font-weight:700;color:#fff;margin-bottom:2px}
+.budget-card-meta{font-size:10px;color:#6b7280}
+.budget-card-actions{display:flex;gap:6px;margin-top:8px}
 </style>
 </head>
 <body>
 
-<!-- SIDEBAR -->
 <div class="sidebar">
   <div class="sidebar-header">
     <div class="sidebar-logo">MALPE ESTUDIO</div>
@@ -137,153 +82,171 @@ textarea{resize:vertical;min-height:60px}
     <button class="tab" onclick="switchTab('saved')">💾 Guardados</button>
   </div>
 
-  <!-- EDITOR TAB -->
   <div id="tabEditor" class="sidebar-body">
     <div class="section-title">Datos del presupuesto</div>
     <div class="field"><label>Título</label><input id="budgetTitle" placeholder="Ej: Fotografía IJEX 2025" oninput="renderPreview()"></div>
     <div class="field"><label>Cliente</label><input id="clientName" placeholder="Ej: OPA Badajoz" oninput="renderPreview()"></div>
     <div class="field"><label>Nº Expediente (opcional)</label><input id="expediente" placeholder="Ej: M25018SE" oninput="renderPreview()"></div>
 
-    <div class="section-title">Añadir servicio</div>
-    <div class="field"><label>Título del servicio</label><input id="svcTitle" placeholder="Ej: Cobertura fotográfica"></div>
-    <div class="field"><label>Descripción</label><textarea id="svcDesc" placeholder="Qué incluye este servicio..."></textarea></div>
-    <div class="field"><label>Precio (sin IVA) €</label><input id="svcPrice" type="number" min="0" step="0.01" placeholder="0.00"></div>
-    <button class="btn btn-green" onclick="addService()">+ Añadir servicio</button>
-    <div id="aiLoader" class="loader"></div>
 
-    <div class="section-title">Servicios añadidos</div>
-    <div id="servicesList"><div style="font-size:11px;color:#374151;text-align:center;padding:8px">Sin servicios aún</div></div>
+    <div class="section-title">Añadir contenido</div>
+
+    <!-- AÑADIR PARTIDA -->
+    <div class="add-box">
+      <div class="add-box-title">📁 Partida (opcional)</div>
+      <div class="field"><label>Título de partida</label><input id="partidaTitle" placeholder="Ej: Fotografía, Vídeo..."></div>
+      <button class="btn btn-outline" onclick="addPartida()">+ Añadir partida</button>
+    </div>
+
+    <!-- AÑADIR SERVICIO -->
+    <div class="add-box">
+      <div class="add-box-title">📋 Servicio</div>
+      <div class="field"><label>Título del servicio</label><input id="svcTitle" placeholder="Ej: Fotografía corporativa"></div>
+      <div class="field"><label>Descripción</label><textarea id="svcDesc" placeholder="Qué incluye este servicio..."></textarea></div>
+      <div class="field"><label>Precio sin IVA (€)</label><input id="svcPrice" type="number" min="0" step="0.01" placeholder="0.00"></div>
+      <button class="btn btn-green" onclick="addService()">+ Añadir servicio</button>
+    </div>
+
+    <div class="section-title">Contenido añadido</div>
+    <div id="itemsList"></div>
+    <div style="margin-top:8px;display:flex;align-items:center;gap:8px;padding:8px 10px;background:#1a1a1a;border:1px solid #2d3748;border-radius:5px">
+      <input type="checkbox" id="showTotal" onchange="renderPreview()" style="width:auto;accent-color:#10b981">
+      <label for="showTotal" style="margin:0;text-transform:none;font-size:11px;color:#9ca3af;letter-spacing:0;cursor:pointer">Mostrar total en el presupuesto</label>
+    </div><div style="font-size:11px;color:#374151;text-align:center;padding:8px">Sin contenido aún</div></div>
   </div>
 
-  <!-- SAVED TAB -->
   <div id="tabSaved" class="sidebar-body" style="display:none">
     <div class="section-title">Presupuestos guardados</div>
     <div id="savedList"><div style="font-size:11px;color:#374151;text-align:center;padding:8px">No hay presupuestos guardados</div></div>
   </div>
 
-  <!-- FOOTER -->
   <div class="sidebar-footer">
     <button class="btn btn-dark" onclick="saveCurrentBudget()">💾 Guardar presupuesto</button>
     <button class="btn btn-pdf" onclick="downloadPDF()">⬇ Descargar PDF</button>
   </div>
 </div>
 
-<!-- PREVIEW -->
 <div class="preview" id="previewArea">
   <div style="color:#374151;font-size:12px;text-align:center;margin-top:60px">Rellena los datos para ver la previsualización</div>
 </div>
 
 <script>
-// ── STATE ──────────────────────────────────────────────
-let services = [];
-let savedBudgets = [];
-
-// Load from storage
-(async()=>{
-  try{
-    const r = await window.storage.get('malpe-budgets');
-    if(r) savedBudgets = JSON.parse(r.value);
-  }catch(e){}
-  renderSaved();
-})();
-
-// ── BACKGROUNDS (CSS gradients matching uploaded images) ──
 const BG = {
   s01: "url('https://raw.githubusercontent.com/MalpeEstudio/presupuestos/main/slide01.jpg') center/cover no-repeat",
   s02: "url('https://raw.githubusercontent.com/MalpeEstudio/presupuestos/main/slide02.jpg') center/cover no-repeat",
-  s03: "url('https://raw.githubusercontent.com/MalpeEstudio/presupuestos/main/slide03.jpg') center/cover no-repeat",
+  s03: "#3f3f3f",
+  s03cond: "url('https://raw.githubusercontent.com/MalpeEstudio/presupuestos/main/slide03.jpg') center/cover no-repeat",
   s04: "url('https://raw.githubusercontent.com/MalpeEstudio/presupuestos/main/slide04.jpg') center/cover no-repeat"
 };
 
-// Malpe logo SVG (top-right small, matching Slide01)
-const LOGO_TOP_RIGHT = `<div style="position:absolute;top:24px;right:32px;text-align:right">
-  <svg width="52" height="36" viewBox="0 0 260 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <polygon points="10,10 130,90 10,170" fill="rgba(60,60,120,0.7)" stroke="white" stroke-width="10"/>
-    <polygon points="250,10 130,90 250,170" fill="rgba(60,60,120,0.7)" stroke="white" stroke-width="10"/>
-    <polygon points="10,10 250,10 195,52 65,52" fill="rgba(60,60,120,0.5)" stroke="white" stroke-width="8"/>
-    <polygon points="10,170 250,170 195,128 65,128" fill="rgba(60,60,120,0.5)" stroke="white" stroke-width="8"/>
-    <polygon points="115,82 145,82 130,100" fill="none" stroke="white" stroke-width="6"/>
-  </svg>
-  <div style="font-size:9px;font-weight:700;color:#fff;letter-spacing:2px;margin-top:2px">MALPE ESTUDIO</div>
-  <div style="font-size:7px;color:rgba(255,255,255,.4);letter-spacing:1px">agencia creativa</div>
-</div>`;
+// items = array de {type:'partida', title} o {type:'servicio', title, desc, price}
+let items = [];
+let savedBudgets = [];
 
-const LOGO_CENTER = `<div style="text-align:center">
-  <svg width="120" height="84" viewBox="0 0 260 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <polygon points="10,10 130,90 10,170" fill="rgba(60,60,120,0.7)" stroke="white" stroke-width="10"/>
-    <polygon points="250,10 130,90 250,170" fill="rgba(60,60,120,0.7)" stroke="white" stroke-width="10"/>
-    <polygon points="10,10 250,10 195,52 65,52" fill="rgba(60,60,120,0.5)" stroke="white" stroke-width="8"/>
-    <polygon points="10,170 250,170 195,128 65,128" fill="rgba(60,60,120,0.5)" stroke="white" stroke-width="8"/>
-    <polygon points="115,82 145,82 130,100" fill="none" stroke="white" stroke-width="6"/>
-  </svg>
-  <div style="font-size:22px;font-weight:700;color:#fff;letter-spacing:3px;margin-top:6px">MALPE ESTUDIO</div>
-  <div style="font-size:12px;color:rgba(255,255,255,.6);letter-spacing:2px;margin-top:4px">agencia creativa</div>
-</div>`;
+(async()=>{
+  try{ const r = await window.storage.get('malpe-budgets'); if(r) savedBudgets=JSON.parse(r.value); }catch(e){}
+  renderSaved();
+})();
 
-// ── TABS ───────────────────────────────────────────────
 function switchTab(t){
-  document.getElementById('tabEditor').style.display = t==='editor'?'block':'none';
-  document.getElementById('tabSaved').style.display = t==='saved'?'block':'none';
-  document.querySelectorAll('.tab').forEach((el,i)=>{
-    el.classList.toggle('active',(i===0&&t==='editor')||(i===1&&t==='saved'));
-  });
+  document.getElementById('tabEditor').style.display=t==='editor'?'block':'none';
+  document.getElementById('tabSaved').style.display=t==='saved'?'block':'none';
+  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',(i===0&&t==='editor')||(i===1&&t==='saved')));
   if(t==='saved') renderSaved();
 }
 
-// ── ADD SERVICE ────────────────────────────────────────
+function val(id){ return document.getElementById(id).value.trim(); }
+function fmtPrice(n){ return n.toLocaleString('es-ES',{minimumFractionDigits:0,maximumFractionDigits:2}); }
+
+function addPartida(){
+  const title = val('partidaTitle');
+  if(!title){ alert('Escribe el título de la partida'); return; }
+  items.push({id:Date.now(), type:'partida', title});
+  document.getElementById('partidaTitle').value='';
+  renderSidebar(); renderPreview();
+}
+
 function addService(){
-  const title = document.getElementById('svcTitle').value.trim();
-  const desc = document.getElementById('svcDesc').value.trim();
-  const price = parseFloat(document.getElementById('svcPrice').value)||0;
+  const title = val('svcTitle');
   if(!title){ alert('El título es obligatorio'); return; }
-  services.push({id:Date.now(), title, desc, price});
+  const price = parseFloat(document.getElementById('svcPrice').value)||0;
+  items.push({id:Date.now(), type:'servicio', title, desc:val('svcDesc'), price});
   document.getElementById('svcTitle').value='';
   document.getElementById('svcDesc').value='';
   document.getElementById('svcPrice').value='';
-  renderSidebar();
-  renderPreview();
+  renderSidebar(); renderPreview();
 }
 
-function removeService(id){
-  services = services.filter(s=>s.id!==id);
-  renderSidebar();
-  renderPreview();
+function removeItem(id){
+  items = items.filter(i=>i.id!==id);
+  renderSidebar(); renderPreview();
 }
 
-// ── RENDER SIDEBAR ─────────────────────────────────────
+function moveItem(id, dir){
+  const idx = items.findIndex(i=>i.id===id);
+  const newIdx = idx+dir;
+  if(newIdx<0||newIdx>=items.length) return;
+  [items[idx],items[newIdx]]=[items[newIdx],items[idx]];
+  renderSidebar(); renderPreview();
+}
+
 function renderSidebar(){
-  const el = document.getElementById('servicesList');
-  if(!services.length){
-    el.innerHTML='<div style="font-size:11px;color:#374151;text-align:center;padding:8px">Sin servicios aún</div>';
-    return;
-  }
-  el.innerHTML = services.map(s=>`
-    <div class="svc-card">
-      <div class="svc-card-header">
-        <span class="svc-card-title">${s.title}</span>
-        <div style="display:flex;gap:6px;align-items:center">
-          <span class="svc-card-price">${s.price>0?fmtPrice(s.price)+'€':'—'}</span>
-          <button class="btn-sm btn-danger" onclick="removeService(${s.id})">✕</button>
+  const el = document.getElementById('itemsList');
+  if(!items.length){ el.innerHTML='<div style="font-size:11px;color:#374151;text-align:center;padding:8px">Sin contenido aún</div>'; return; }
+  el.innerHTML = items.map((item,i)=>{
+    const actions = `<div style="display:flex;gap:4px;flex-shrink:0">
+      ${i>0?`<button class="btn-xs" onclick="moveItem(${item.id},-1)">↑</button>`:''}
+      ${i<items.length-1?`<button class="btn-xs" onclick="moveItem(${item.id},1)">↓</button>`:''}
+      <button class="btn-xs danger" onclick="removeItem(${item.id})">✕</button>
+    </div>`;
+    if(item.type==='partida') return `
+      <div class="item-card is-partida">
+        <div class="item-card-row">
+          <div><div class="partida-label">PARTIDA</div><div class="item-card-title">${item.title}</div></div>
+          ${actions}
         </div>
-      </div>
-      ${s.desc?`<div class="svc-card-desc">${s.desc}</div>`:''}
-    </div>
-  `).join('');
+      </div>`;
+    return `
+      <div class="item-card">
+        <div class="item-card-row">
+          <div style="flex:1">
+            <div class="item-card-title">${item.title}</div>
+            ${item.desc?`<div class="item-card-sub">${item.desc.substring(0,60)}${item.desc.length>60?'...':''}</div>`:''}
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+            ${item.price>0?`<span class="item-card-price">${fmtPrice(item.price)}€</span>`:''}
+            ${actions}
+          </div>
+        </div>
+      </div>`;
+  }).join('');
 }
 
-// ── FORMAT ─────────────────────────────────────────────
-function fmtPrice(n){ return n.toLocaleString('es-ES',{minimumFractionDigits:0,maximumFractionDigits:2}); }
-function val(id){ return document.getElementById(id).value.trim(); }
+// Agrupar items por partidas para los slides
+function groupItems(){
+  const groups = [];
+  let current = {partida:null, servicios:[]};
+  items.forEach(item=>{
+    if(item.type==='partida'){
+      if(current.servicios.length) groups.push({...current});
+      current = {partida:item.title, servicios:[]};
+    } else {
+      current.servicios.push(item);
+    }
+  });
+  if(current.servicios.length) groups.push({...current});
+  return groups;
+}
 
-// ── BUILD SLIDES HTML ──────────────────────────────────
 function buildSlides(){
   const title = val('budgetTitle')||'Propuesta de Servicios';
   const client = val('clientName')||'Cliente';
   const exp = val('expediente');
-
+  const servicios = items.filter(i=>i.type==='servicio');
+  const groups = groupItems();
   let slides = [];
 
-  // S1 - PORTADA (Slide01 bg)
+  // PORTADA
   slides.push(`
     <div class="slide">
       <div class="slide-bg" style="background:${BG.s01}"></div>
@@ -294,10 +257,9 @@ function buildSlides(){
         ${exp?`<div style="font-size:12px;color:rgba(255,255,255,.35)">Expediente ${exp}</div>`:''}
       </div>
     </div>
-    <div class="slide-label">PORTADA</div>
-  `);
+    <div class="slide-label">PORTADA</div>`);
 
-  // S2 - PROPUESTA (Slide02 bg)
+  // TRANSICIÓN PROPUESTA
   slides.push(`
     <div class="slide">
       <div class="slide-bg" style="background:${BG.s02}"></div>
@@ -306,39 +268,40 @@ function buildSlides(){
         <div style="font-size:12px;color:rgba(255,255,255,.35);letter-spacing:4px;text-transform:uppercase">A continuación encontraréis los servicios</div>
       </div>
     </div>
-    <div class="slide-label">TRANSICIÓN — PROPUESTA</div>
-  `);
+    <div class="slide-label">TRANSICIÓN — PROPUESTA</div>`);
 
-  // S3 - TODOS LOS SERVICIOS EN UNA SOLA SLIDE (Slide03 bg)
-  if(services.length){
+  // SERVICIOS (una sola slide)
+  if(servicios.length){
     slides.push(`
       <div class="slide">
         <div class="slide-bg" style="background:${BG.s03}"></div>
         <div class="slide-content s03-content">
-          <div class="s03-header">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
             <div style="font-size:22px;font-weight:700;font-style:italic;color:#fff">Servicios incluidos</div>
-            <div style="font-size:8px;color:rgba(255,255,255,.3);font-weight:700;letter-spacing:2px">MALPE ESTUDIO ®</div>
+            <div style="font-size:8px;color:rgba(255,255,255,.4);font-weight:700;letter-spacing:2px">MALPE ESTUDIO ®</div>
           </div>
-          <div style="width:36px;height:2px;background:#10b981;margin-bottom:18px"></div>
-          <div style="flex:1;display:flex;flex-direction:column;gap:14px;overflow:hidden">
-            ${services.map(s=>`
-              <div style="display:flex;gap:16px;align-items:flex-start">
-                <div style="width:3px;min-width:3px;height:100%;background:#10b981;border-radius:2px;margin-top:3px;align-self:stretch"></div>
-                <div>
-                  <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:3px">${s.title}</div>
-                  ${s.desc?`<div style="font-size:11px;color:rgba(255,255,255,.55);line-height:1.6">${s.desc}</div>`:''}
+          <div style="width:36px;height:2px;background:#10b981;margin-bottom:16px"></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;gap:0">
+            ${groups.map(g=>`
+              ${g.partida?`<div style="font-size:10px;font-weight:700;color:#10b981;letter-spacing:2px;text-transform:uppercase;margin:10px 0 6px;padding-bottom:4px;border-bottom:1px solid rgba(16,185,129,.3)">${g.partida}</div>`:''}
+              ${g.servicios.map(s=>`
+                <div style="display:flex;gap:12px;align-items:flex-start;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.06)">
+                  <div style="width:2px;min-width:2px;background:#10b981;border-radius:2px;align-self:stretch;margin-top:2px"></div>
+                  <div style="flex:1">
+                    <div style="font-size:12px;font-weight:700;color:#fff">${s.title}</div>
+                    ${s.desc?`<div style="font-size:10px;color:rgba(255,255,255,.5);line-height:1.5;margin-top:2px">${s.desc}</div>`:''}
+                  </div>
                 </div>
-              </div>
+              `).join('')}
             `).join('')}
           </div>
         </div>
       </div>
-      <div class="slide-label">SERVICIOS</div>
-    `);
+      <div class="slide-label">SERVICIOS</div>`);
   }
 
-  // S4 - PRESUPUESTO transición (Slide02 bg)
-  if(services.length){
+  // TRANSICIÓN PRESUPUESTO
+  if(servicios.length){
     slides.push(`
       <div class="slide">
         <div class="slide-bg" style="background:${BG.s02}"></div>
@@ -347,204 +310,160 @@ function buildSlides(){
           <div style="font-size:12px;color:rgba(255,255,255,.35);letter-spacing:4px;text-transform:uppercase">Desglose de costes</div>
         </div>
       </div>
-      <div class="slide-label">TRANSICIÓN — PRESUPUESTO</div>
-    `);
+      <div class="slide-label">TRANSICIÓN — PRESUPUESTO</div>`);
 
-    // S5 - DESGLOSE PRECIOS (Slide03 bg)
-    const base = services.reduce((a,s)=>a+s.price,0);
+    // PRECIOS
+    const base = servicios.reduce((a,s)=>a+s.price,0);
     const iva = Math.round(base*0.21*100)/100;
     const total = Math.round((base+iva)*100)/100;
     slides.push(`
       <div class="slide">
         <div class="slide-bg" style="background:${BG.s03}"></div>
         <div class="slide-content s03-content">
-          <div class="s03-header">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
             <div style="font-size:22px;font-weight:700;font-style:italic;color:#fff">Desglose de Precios</div>
-            <div style="font-size:8px;color:rgba(255,255,255,.3);font-weight:700;letter-spacing:2px">MALPE ESTUDIO ®</div>
+            <div style="font-size:8px;color:rgba(255,255,255,.4);font-weight:700;letter-spacing:2px">MALPE ESTUDIO ®</div>
           </div>
-          <div style="width:36px;height:2px;background:#10b981;margin-bottom:18px"></div>
-          <div style="flex:1;display:flex;flex-direction:column;gap:0;overflow:hidden">
-            <!-- cabecera tabla -->
-            <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.2);margin-bottom:4px">
-              <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:2px;text-transform:uppercase">Servicio</span>
-              <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:2px;text-transform:uppercase">Precio sin IVA</span>
-            </div>
-            ${services.map(s=>`
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)">
-                <span style="font-size:13px;color:rgba(255,255,255,.85);font-weight:600">${s.title}</span>
-                <span style="font-size:14px;font-weight:700;color:#fff;white-space:nowrap">${s.price>0?fmtPrice(s.price)+' €':'—'}</span>
-              </div>
+          <div style="width:36px;height:2px;background:#10b981;margin-bottom:16px"></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.2);margin-bottom:4px">
+            <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:2px">SERVICIO</span>
+            <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:2px">PRECIO SIN IVA</span>
+          </div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+            ${groups.map(g=>`
+              ${g.partida?`<div style="font-size:9px;font-weight:700;color:#10b981;letter-spacing:2px;text-transform:uppercase;margin:10px 0 4px">${g.partida}</div>`:''}
+              ${g.servicios.map(s=>`
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)">
+                  <span style="font-size:12px;color:rgba(255,255,255,.85);font-weight:600">${s.title}</span>
+                  <span style="font-size:13px;font-weight:700;color:#fff">${s.price>0?fmtPrice(s.price)+' €':'—'}</span>
+                </div>
+              `).join('')}
             `).join('')}
           </div>
-          <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.18)">
+          <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.2)">
             <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.4);margin-bottom:5px"><span>Base imponible</span><span>${fmtPrice(base)} €</span></div>
-            <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.4);margin-bottom:12px"><span>IVA 21%</span><span>+${fmtPrice(iva)} €</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.4);margin-bottom:10px"><span>IVA 21%</span><span>+${fmtPrice(iva)} €</span></div>
+            ${document.getElementById('showTotal').checked?`
             <div style="display:flex;justify-content:space-between;align-items:center">
-              <span style="font-size:13px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:2px;text-transform:uppercase">Total</span>
-              <span style="font-size:32px;font-weight:700;color:#10b981">${fmtPrice(total)} €</span>
-            </div>
+              <span style="font-size:12px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:2px">TOTAL</span>
+              <span style="font-size:30px;font-weight:700;color:#10b981">${fmtPrice(total)} €</span>
+            </div>`:''}
           </div>
         </div>
       </div>
-      <div class="slide-label">PRECIOS</div>
-    `);
+      <div class="slide-label">PRECIOS</div>`);
   }
 
-  // S6 - CONDICIONES (Slide03 bg)
+  // CONDICIONES
   const conds = [
-    'Aceptación del presupuesto mediante confirmación por cualquier vía: correo, WhatsApp, llamada.',
-    'Firma de contrato con todos los datos, condiciones de pago y cancelación.',
-    'Forma de pago: 60% al inicio del trabajo, 40% restante a la finalización.',
-    'Tiempos de entrega según lo especificado en el contrato y disponibilidad de ambas partes.',
-    'Modificaciones fuera del alcance serán valoradas de forma independiente.',
-    'Validez del presupuesto: 30 días. Transcurrido este plazo los precios pueden variar.',
-    'Los precios no incluyen IVA (21%).',
-    'Desplazamiento no incluido, valorado en 0,50 €/km desde Badajoz.',
+    'Aceptación del presupuesto: Nos servirá con una confirmación por cualquier vía de contacto: correo, whatsapp, llamada...',
+    'Firma de contrato: Os enviaremos un contrato donde aparecerán todos los datos expuestos y que resultado final obtendréis, así como las condiciones de pago o cancelación del trabajo.',
+    'Forma de pago: Para comenzar el trabajo de sebe abonar el 60% del total presupuestado, el 40% restante se abona a la finalización del trabajo.',
+    'Tiempos de entrega: Los tiempos de entregan se acogerán a lo especificado en el contrato, siendo supeditados a la disponibilidad de ambas partes o entrega de documentación solicitada.',
+    'Fotografías y vídeos: Salvo error tipográfico o detallado expresamente en el apartado, no se incluyen fotografías ni vídeos para la finalización del proyecto.',
+    'Blog: Para considerar una revisión y no creación de texto, la extensión mínima debe ser 600 palabras y hablando en exclusiva de la categoría a la que se va a referir la publicación.',
+    'Modificaciones: Se podrán hacer hasta un máximo de 2 modificaciones en cada proyecto digital sin coste adicional. Cualquier cambio extra será valorado.',
+    'Impresiones: Tras la aceptación del archivo digital, o su entrega, no se podrán hacer modificaciones en las impresiones. Cualquier cambio será asumido por el cliente. No se hacen modificaciones en archivos entregado para impresión que no se hayan realizado en Malpe Estudio.',
+    'Inversión: No se incluye la inversión en campañas de publicidad, el coste de posibles plugins o herramientas necesarias para el correcto funcionamiento de la web. Tampoco se incluye el coste anual del Hosting y el dominio.',
+    'Modificaciones: Cualquier modificación de las acciones a desarrollar serán valoradas de forma independiente a este presupuesto.',
+    'Validez del presupuesto: Este presupuesto tiene una validez de 30 días, tras este periodo los precios marcados pueden ser modificados.',
+    'Los precios incluidos en esta propuesta no llevan I.V.A. incluido.',
   ];
   slides.push(`
     <div class="slide">
-      <div class="slide-bg" style="background:${BG.s03}"></div>
+      <div class="slide-bg" style="background:${BG.s03cond}"></div>
       <div class="slide-content s03-content">
-        <div class="s03-header">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
           <div style="font-size:22px;font-weight:700;font-style:italic;color:#fff">¿Cómo trabajamos?</div>
           <div style="font-size:8px;color:rgba(255,255,255,.3);font-weight:700;letter-spacing:2px">MALPE ESTUDIO ®</div>
         </div>
         <div style="flex:1">
           ${conds.map((c,i)=>`
-            <div style="display:flex;gap:12px;margin-bottom:9px;font-size:10px;color:rgba(255,255,255,.65);line-height:1.55">
+            <div style="display:flex;gap:12px;margin-bottom:9px;font-size:10px;color:rgba(255,255,255,.7);line-height:1.55">
               <span style="font-weight:700;color:#10b981;min-width:16px">${i+1}.</span>
               <span>${c}</span>
-            </div>
-          `).join('')}
+            </div>`).join('')}
         </div>
-        <div style="padding-top:10px;border-top:1px solid rgba(255,255,255,.1);font-size:8.5px;color:rgba(255,255,255,.25);letter-spacing:.5px">
+        <div style="padding-top:10px;border-top:1px solid rgba(255,255,255,.15);font-size:8.5px;color:rgba(255,255,255,.3)">
           Inmaculada Lancharro González · CIF 80075258E · Vicente Barrantes 8B · Badajoz, 06002 · 662628082 · malpeestudio.com
         </div>
       </div>
     </div>
-    <div class="slide-label">CONDICIONES</div>
-  `);
+    <div class="slide-label">CONDICIONES</div>`);
 
-  // S7 - FINAL (Slide04 bg — logo centrado grande)
+  // FINAL
   slides.push(`
     <div class="slide">
       <div class="slide-bg" style="background:${BG.s04}"></div>
-      <div class="slide-content" style="align-items:center;justify-content:center">
-      </div>
+      <div class="slide-content"></div>
     </div>
-    <div class="slide-label">FINAL</div>
-  `);
+    <div class="slide-label">FINAL</div>`);
 
   return slides;
 }
 
-// ── RENDER PREVIEW ─────────────────────────────────────
 function renderPreview(){
-  const area = document.getElementById('previewArea');
-  const slides = buildSlides();
-  area.innerHTML = slides.join('');
+  document.getElementById('previewArea').innerHTML = buildSlides().join('');
 }
 
-// ── SAVE BUDGET ────────────────────────────────────────
 async function saveCurrentBudget(){
   const title = val('budgetTitle')||'Sin título';
-  const client = val('clientName')||'Sin cliente';
-  const id = Date.now();
-  const budget = {
-    id, title, client,
-    expediente: val('expediente'),
-    services: JSON.parse(JSON.stringify(services)),
-    savedAt: new Date().toLocaleDateString('es-ES')
-  };
+  const budget = {id:Date.now(), title, client:val('clientName'), expediente:val('expediente'), items:JSON.parse(JSON.stringify(items)), savedAt:new Date().toLocaleDateString('es-ES')};
   savedBudgets.unshift(budget);
-  try{
-    await window.storage.set('malpe-budgets', JSON.stringify(savedBudgets));
-    alert(`✓ Presupuesto "${title}" guardado`);
-  }catch(e){
-    alert('Error al guardar');
-  }
+  try{ await window.storage.set('malpe-budgets',JSON.stringify(savedBudgets)); alert(`✓ "${title}" guardado`); }
+  catch(e){ alert('Error al guardar'); }
   renderSaved();
 }
 
 function loadBudget(id){
   const b = savedBudgets.find(b=>b.id===id);
   if(!b) return;
-  document.getElementById('budgetTitle').value = b.title;
-  document.getElementById('clientName').value = b.client;
-  document.getElementById('expediente').value = b.expediente||'';
-  services = JSON.parse(JSON.stringify(b.services));
-  renderSidebar();
-  renderPreview();
-  switchTab('editor');
+  document.getElementById('budgetTitle').value=b.title;
+  document.getElementById('clientName').value=b.client;
+  document.getElementById('expediente').value=b.expediente||'';
+  items=JSON.parse(JSON.stringify(b.items));
+  renderSidebar(); renderPreview(); switchTab('editor');
 }
 
 async function deleteBudget(id){
   if(!confirm('¿Eliminar este presupuesto?')) return;
-  savedBudgets = savedBudgets.filter(b=>b.id!==id);
-  await window.storage.set('malpe-budgets', JSON.stringify(savedBudgets));
+  savedBudgets=savedBudgets.filter(b=>b.id!==id);
+  await window.storage.set('malpe-budgets',JSON.stringify(savedBudgets));
   renderSaved();
 }
 
 function renderSaved(){
-  const el = document.getElementById('savedList');
-  if(!savedBudgets.length){
-    el.innerHTML='<div style="font-size:11px;color:#374151;text-align:center;padding:8px">No hay presupuestos guardados</div>';
-    return;
-  }
-  el.innerHTML = savedBudgets.map(b=>`
+  const el=document.getElementById('savedList');
+  if(!savedBudgets.length){ el.innerHTML='<div style="font-size:11px;color:#374151;text-align:center;padding:8px">No hay presupuestos guardados</div>'; return; }
+  el.innerHTML=savedBudgets.map(b=>`
     <div class="budget-card">
       <div class="budget-card-title">${b.title}</div>
-      <div class="budget-card-meta">${b.client} · ${b.savedAt}</div>
+      <div class="budget-card-meta">${b.client||'Sin cliente'} · ${b.savedAt}</div>
       <div class="budget-card-actions">
-        <button class="btn-sm" onclick="loadBudget(${b.id})">📂 Cargar</button>
-        <button class="btn-sm btn-danger" onclick="deleteBudget(${b.id})">✕ Eliminar</button>
+        <button class="btn-xs" onclick="loadBudget(${b.id})">📂 Cargar</button>
+        <button class="btn-xs danger" onclick="deleteBudget(${b.id})">✕ Eliminar</button>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
-// ── DOWNLOAD PDF ───────────────────────────────────────
 async function downloadPDF(){
-  const {jsPDF} = window.jspdf;
-  const slides = document.querySelectorAll('#previewArea .slide');
+  const {jsPDF}=window.jspdf;
+  const slides=document.querySelectorAll('#previewArea .slide');
   if(!slides.length){ alert('No hay slides para exportar'); return; }
-
-  const btn = document.querySelector('.btn-pdf');
-  btn.textContent = '⏳ Generando PDF...';
-  btn.disabled = true;
-
+  const btn=document.querySelector('.btn-pdf');
+  btn.textContent='⏳ Generando...'; btn.disabled=true;
   try{
-    const pdf = new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
-    const W = 297, H = 210;
-
+    const pdf=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
     for(let i=0;i<slides.length;i++){
-      const canvas = await html2canvas(slides[i],{
-        scale:2,
-        useCORS:true,
-        allowTaint:true,
-        backgroundColor:'#1c1e22',
-        logging:false,
-        onclone:(doc)=>{
-          // Remove external stylesheets to avoid CORS errors
-          doc.querySelectorAll('link[rel="stylesheet"]').forEach(el=>el.remove());
-        }
-      });
-      const img = canvas.toDataURL('image/jpeg',0.92);
+      const canvas=await html2canvas(slides[i],{scale:2,useCORS:true,allowTaint:true,backgroundColor:'#1c1e22',logging:false,onclone:(doc)=>{ doc.querySelectorAll('link[rel="stylesheet"]').forEach(el=>el.remove()); }});
       if(i>0) pdf.addPage();
-      pdf.addImage(img,'JPEG',0,0,W,H);
+      pdf.addImage(canvas.toDataURL('image/jpeg',.92),'JPEG',0,0,297,210);
     }
-
-    const name = (val('budgetTitle')||'presupuesto').replace(/\s+/g,'-').toLowerCase();
-    pdf.save(`${name}-malpe.pdf`);
-  }catch(e){
-    alert('Error al generar PDF: '+e.message);
-  }
-
-  btn.textContent = '⬇ Descargar PDF';
-  btn.disabled = false;
+    pdf.save(`${(val('budgetTitle')||'presupuesto').replace(/\s+/g,'-').toLowerCase()}-malpe.pdf`);
+  }catch(e){ alert('Error: '+e.message); }
+  btn.textContent='⬇ Descargar PDF'; btn.disabled=false;
 }
 
-// ── INIT ───────────────────────────────────────────────
 renderSidebar();
 renderPreview();
 </script>
